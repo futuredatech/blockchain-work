@@ -70,7 +70,7 @@ func errFatal(msg string, err error) {
 }
 
 func newBlock(prevBlockHash []byte, height int) *Block {
-	block := &Block{0, time.Now().Unix(), prevBlockHash, []byte{}, 0,}
+	block := &Block{0, prevBlockHash, time.Now().Unix(), "", "", 0}
 	pow := NewProofOfWork(block)
 	nonce, hash := pow.Run()
 
