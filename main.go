@@ -28,6 +28,7 @@ var genesisBlock = &Block{
 	Timestamp:    1465154705,
 	Data:         "my genesis block!!",
 	Hash:         "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7",
+	Nonce         0,
 }
 
 var (
@@ -44,6 +45,7 @@ type Block struct {
 	Timestamp    int64  `json:"timestamp"`
 	Data         string `json:"data"`
 	Hash         string `json:"hash"`
+	Nonce        int64 `json:"hash"`
 }
 
 func (b *Block) String() string {
@@ -65,6 +67,17 @@ func errFatal(msg string, err error) {
 	if err != nil {
 		log.Fatalln(msg, err)
 	}
+}
+
+func newBlock(prevBlockHash []byte, height int) *Block {
+	block := &Block{0, time.Now().Unix(), prevBlockHash, []byte{}, 0,}
+	pow := NewProofOfWork(block)
+	nonce, hash := pow.Run()
+
+	block.Hash = hash[:]
+	block.Nonce = nonce
+
+	return block
 }
 
 func connectToPeers(peersAddr []string) {
