@@ -21,7 +21,7 @@ const (
 	responseBlockchain
 )
 
-# 链式结构 区块
+// 链式结构 区块
 var genesisBlock = &Block{
 	Index:        0,
 	PreviousHash: "0",
@@ -149,7 +149,7 @@ func handleAddPeer(w http.ResponseWriter, r *http.Request) {
 	connectToPeers([]string{v.Peer})
 }
 
-# p2p处理
+// p2p处理
 func wsHandleP2P(ws *websocket.Conn) {
 	var (
 		v    = &ResponseBlockchain{}

@@ -6,3 +6,6 @@
 # guide
 * go env -w GOPROXY=https://goproxy.cn
 * go get golang.org/x/net/websocket
+* go env -w GO111MODULE=on
+* go mod init github.com/futuredatech/blockchain-work
+
