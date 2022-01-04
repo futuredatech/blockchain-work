@@ -28,7 +28,7 @@ var genesisBlock = &Block{
 	Timestamp:    1465154705,
 	Data:         "my genesis block!!",
 	Hash:         "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7",
-	Nonce         0,
+	Nonce:         0,
 }
 
 var (
@@ -69,13 +69,13 @@ func errFatal(msg string, err error) {
 	}
 }
 
-func newBlock(prevBlockHash []byte, height int) *Block {
+func newBlock(prevBlockHash string, height int) *Block {
 	block := &Block{0, prevBlockHash, time.Now().Unix(), "", "", 0}
 	pow := NewProofOfWork(block)
 	nonce, hash := pow.Run()
 
-	block.Hash = hash[:]
-	block.Nonce = nonce
+	block.Hash = string(hash)
+	block.Nonce = int64(nonce)
 
 	return block
 }

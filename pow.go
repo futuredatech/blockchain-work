@@ -1,6 +1,7 @@
 package main
 
 import (
+        "strconv"
 	"bytes"
 	"crypto/sha256"
 	"fmt"
@@ -20,6 +21,11 @@ type ProofOfWork struct {
 	target *big.Int
 }
 
+
+func IntToHex(n int64) []byte {
+    return []byte(strconv.FormatInt(n, 16))
+}
+
 // NewProofOfWork builds and returns a ProofOfWork
 func NewProofOfWork(b *Block) *ProofOfWork {
 	target := big.NewInt(1)
@@ -33,8 +39,8 @@ func NewProofOfWork(b *Block) *ProofOfWork {
 func (pow *ProofOfWork) prepareData(nonce int) []byte {
 	data := bytes.Join(
 		[][]byte{
-			pow.block.PrevBlockHash,
-			pow.block.HashTransactions(),
+			[]byte(pow.block.PreviousHash),
+//			pow.block.HashTransactions(),
 			IntToHex(pow.block.Timestamp),
 			IntToHex(int64(targetBits)),
 			IntToHex(int64(nonce)),
@@ -76,7 +82,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 func (pow *ProofOfWork) Validate() bool {
 	var hashInt big.Int
 
-	data := pow.prepareData(pow.block.Nonce)
+	data := pow.prepareData(int(pow.block.Nonce))
 	hash := sha256.Sum256(data)
 	hashInt.SetBytes(hash[:])
 
