@@ -28,6 +28,7 @@ var genesisBlock = &Block{
 	Timestamp:    1465154705,
 	Data:         "my genesis block!!",
 	Hash:         "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7",
+	MerkelRoot:   "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7",
 	Nonce:         0,
 }
 
@@ -45,11 +46,12 @@ type Block struct {
 	Timestamp    int64  `json:"timestamp"`
 	Data         string `json:"data"`
 	Hash         string `json:"hash"`
+	MerkelRoot   string `json:"merkelroot"`
 	Nonce        int64 `json:"hash"`
 }
 
 func (b *Block) String() string {
-	return fmt.Sprintf("index: %d,previousHash:%s,timestamp:%d,data:%s,hash:%s", b.Index, b.PreviousHash, b.Timestamp, b.Data, b.Hash)
+	return fmt.Sprintf("index: %d,previousHash:%s,timestamp:%d,data:%s,merkelroot:%s, hash:%s", b.Index, b.PreviousHash, b.Timestamp, b.Data, b.MerkelRoot, b.Hash)
 }
 
 type ByIndex []*Block
@@ -70,10 +72,17 @@ func errFatal(msg string, err error) {
 }
 
 func newBlock(prevBlockHash string, height int) *Block {
-	block := &Block{0, prevBlockHash, time.Now().Unix(), "", "", 0}
+	block := &Block{0, prevBlockHash, time.Now().Unix(), "", "","", 0}
 	pow := NewProofOfWork(block)
 	nonce, hash := pow.Run()
 
+	var list []Content
+  	list = append(list, TestContent{x: block.Data})
+	t, err := NewTree(list)
+	if err != nil {
+		log.Fatal(err)
+	}
+	block.MerkelRoot = string(t.MerkleRoot())
 	block.Hash = string(hash)
 	block.Nonce = int64(nonce)
 
@@ -218,6 +227,14 @@ func generateNextBlock(data string) (nb *Block) {
 		Timestamp:    time.Now().Unix(),
 	}
 	nb.Hash = calculateHashForBlock(nb)
+
+	var list []Content
+	list = append(list, TestContent{x: nb.Data})
+	t, err := NewTree(list)
+	if err != nil {
+		log.Fatal(err)
+	}
+	nb.MerkelRoot = string(t.MerkleRoot())
 	return
 }
 func addBlock(b *Block) {
