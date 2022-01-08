@@ -1,9 +1,9 @@
 # blockchain-work
 
 # 小组分工
-* 高启化 proof of work实现
-* 王萌   Merkeltree实现
-* 包俊捷 存储，CLI 
+* 高启化 20262010069 proof of work实现
+* 王萌 20262010047 13162536279  Merkeltree实现
+* 包俊捷20262010013#18918880102  存储，CLI 
 * 
 # guide
 * go env -w GOPROXY=https://goproxy.cn
