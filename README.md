@@ -9,7 +9,6 @@
 * go get
 * go env -w GO111MODULE=on
 * go run main.go
-* go run main.go initNode  初始化节点
 
 ```
 go run main.go
