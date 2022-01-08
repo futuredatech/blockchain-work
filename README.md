@@ -4,6 +4,7 @@
 * 高启化 proof of work实现
 * 王萌   Merkeltree实现
 * 包俊捷 存储，CLI 
+* 
 # guide
 * go env -w GOPROXY=https://goproxy.cn
 * go get
